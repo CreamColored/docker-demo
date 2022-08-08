@@ -1,0 +1,29 @@
+version: '3'
+services:
+  docker-demo:
+    image: amadeus/docker-demo
+    container_name: docker-demo
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql-server
+    links:
+      - mysql-server
+  mysql-server:
+    container_name: mysql-server
+    image: mysql:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: docker_test
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: raIn4ugust
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Shanghai
